@@ -1,4 +1,9 @@
-  
+/*This code is made by Kartik Kumar of Sri venkateshwar International school for a project to be desgined in hackathon hosted by INCUBATE IND
+there are a few things that are not complete in this project-
+1. the accurate values for sensors as they are not available with me during lockdown , hence i have given either 0 or default values to them
+2. the code as of now only serial prints whether or not there is a leak or not in under the sinks , i.e. wheter it is dry or wet
+the time of completetion of this code is 19:41 UTC +5:30 , 5/05/2020
+*/
 
 #include <ESP8266WiFi.h>
  
@@ -25,7 +30,11 @@ int Days;
 int Hours;
 int Minutes;
 int Seconds;
- 
+ const int capteur_D = 4;
+const int capteur_A = A0 ;
+
+int val_analogique;
+
 #define command_delay 500
 #define start_delay 2500
 String dataString = "";
@@ -70,6 +79,8 @@ void setup()
   Serial.println(" ");
   Serial.println("STARTING MEASUREMENTS");
   Serial.println(" ");
+    pinMode(capteur_D, INPUT);
+  pinMode(capteur_A, INPUT);
  
 }
  
@@ -101,6 +112,7 @@ void loop()
   Rs = ((5.0*RL)/VRL)-RL; //Use formula to get Rs value
   ratio = Rs/Ro;  // find ratio Rs/Ro
   float ppm = pow(10, ((log10(ratio)-b)/m)); //use formula to calculate ppm
+  
    SPEC_Data_read();
   SPEC_parse_data();
   SPEC_print_data();
@@ -108,6 +120,7 @@ void loop()
  //if (ppm=>threshold) {
 // sound alarm or turn on light to indiacate that the bathroom needs a check and needs to be cleaned
 //}35
+
  
 
 
@@ -117,7 +130,7 @@ void loop()
                              postStr +="&field2=";
                              postStr += String(VRL);
                              postStr +="&field3=";
-                             postStr += String(H2S);iol
+                             postStr += String(H2S);
                              postStr +="&field4=";
                              postStr += String(Temperature);
                              postStr += "\r\n\r\n\r\n\r\n";
@@ -142,8 +155,23 @@ void loop()
  
           Serial.println("Waiting...");
   
-  // thingspeak needs minimum 15 sec delay between updates, i've set it to 30 seconds
-  delay(16000);
+  
+  if(digitalRead(capteur_D) == LOW) 
+  {
+    Serial.println("Digital value : wet"); 
+    delay(10); 
+  }
+else
+  {
+    Serial.println("Digital value : dry");
+    delay(10); 
+  }
+val_analogique=analogRead(capteur_A); 
+ Serial.print("Analog value : ");
+ Serial.println(val_analogique); 
+ Serial.println("");
+  delay(1000);
+  delay(14900);
 }
 void SPEC_Data_read(){
   // First, we do some initialization
@@ -253,4 +281,5 @@ void SPEC_dump_EEPROM(){
     Serial.println (" ");
     Serial.println ("Buffer flushed!");
   }
-}
+}  
+
