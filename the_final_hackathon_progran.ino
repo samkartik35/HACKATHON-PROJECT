@@ -1,9 +1,3 @@
-/*This code is made by Kartik Kumar of Sri venkateshwar International school for a project to be desgined in hackathon hosted by INCUBATE IND
-there are a few things that are not complete in this project-
-1. the accurate values for sensors as they are not available with me during lockdown , hence i have given either 0 or default values to them
-2. the code as of now only serial prints whether or not there is a leak or not in under the sinks , i.e. wheter it is dry or wet
-the time of completetion of this code is 19:41 UTC +5:30 , 5/05/2020
-*/
 
 #include <ESP8266WiFi.h>
  
